@@ -1,0 +1,7 @@
+build:
+  image: node
+  script:
+    - npm install -g yarn
+    - yarn
+    - yarn test
+    - yarn build

@@ -1,4 +1,5 @@
-export const hello = (flag = true) => {
+// @flow
+export const hello = (flag: boolean = true) => {
   let result = '';
 
   if(flag)

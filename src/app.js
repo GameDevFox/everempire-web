@@ -4,10 +4,11 @@ import { Route, Link, withRouter } from 'react-router-dom';
 import { Button, Header, Menu, Message } from 'semantic-ui-react';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { msg: 'Alpha' };
-  }
+  state = { msg: 'Alpha' };
+
+  getMessage = b => b * b;
+
+  onClickButton = () => this.setState({ msg: 'Omega' });
 
   render() {
     const { pathname } = this.props.location;
@@ -21,16 +22,26 @@ class App extends Component {
     });
 
     return (
-      <Message>
-        <Header>Hello {this.state.msg}</Header>
-        <Menu pointing>{menuItems}</Menu>
+      <div>
+        <Menu>
+          {this.getMessage(16)}
+        </Menu>
 
-        <Button onClick={() => this.setState({ msg: 'Omega' })}>Click</Button>
+        <Menu>
+          {this.props.msg}
+        </Menu>
 
-        <Route exact path="/" render={() => <div>Hello World</div>}/>
-        <Route path="/one" render={() => <div>Another One</div>}/>
-        <Route path="/two" render={() => <div>Final</div>}/>
-      </Message>
+        <Message>
+          <Header>Hello {this.state.msg}</Header>
+          <Menu pointing>{menuItems}</Menu>
+
+          <Button onClick={this.onClickButton}>Click</Button>
+
+          <Route exact path="/" render={() => <div>Hello World</div>}/>
+          <Route path="/one" render={() => <div>Another One</div>}/>
+          <Route path="/two" render={() => <div>Final</div>}/>
+        </Message>
+      </div>
     );
   }
 }

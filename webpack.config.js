@@ -1,3 +1,4 @@
+const FlowWebpackPlugin = require('flow-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const env = process.env.NODE_ENV || 'production';
@@ -30,6 +31,9 @@ const config = {
   },
 
   plugins: [
+    new FlowWebpackPlugin({
+      flowArgs: ['--color=never', '--quiet']
+    }),
     new HtmlWebpackPlugin({ template: './src/index.html' })
   ]
 };

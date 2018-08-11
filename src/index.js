@@ -1,3 +1,4 @@
+// @flow
 import './index.scss';
 
 import React from 'react';
@@ -10,8 +11,12 @@ console.log('Hello EverEmpire.com');
 
 const root = (
   <Router>
-    <App/>
+    <App msg="hello"/>
   </Router>
 );
 
-render(root, document.getElementById('root'));
+const rootEl = document.getElementById('root');
+if(!rootEl)
+  throw new Error('#root element doesn\'t exist');
+
+render(root, rootEl);
