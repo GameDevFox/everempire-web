@@ -10,7 +10,7 @@
     "test:watch": "NODE_ENV=test mocha-webpack --watch --webpack-config webpack.config.js src/index.spec.js"
   },
   "author": "Edward Nicholes Jr.",
-  "license": "GPL-3.0",
+  "license": "GPL-3.0-only",
   "description": "",
   "devDependencies": {
     "babel-eslint": "^8.2.6",
