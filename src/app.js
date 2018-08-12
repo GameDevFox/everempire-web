@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import { Route, Link, withRouter } from 'react-router-dom';
 import { Button, Header, Menu, Message } from 'semantic-ui-react';
+import configP from './config';
 
 class App extends Component {
   state = { msg: 'Alpha' };
 
-  getMessage = b => b * b;
-
   onClickButton = () => this.setState({ msg: 'Omega' });
+
+  componentDidMount() {
+    configP.then(config => this.setState({ msg: config.msg }));
+  }
 
   render() {
     const { pathname } = this.props.location;
@@ -23,14 +26,6 @@ class App extends Component {
 
     return (
       <div>
-        <Menu>
-          {this.getMessage(16)}
-        </Menu>
-
-        <Menu>
-          {this.props.msg}
-        </Menu>
-
         <Message>
           <Header>Hello {this.state.msg}</Header>
           <Menu pointing>{menuItems}</Menu>

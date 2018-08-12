@@ -11,7 +11,7 @@ console.log('Hello EverEmpire.com');
 
 const root = (
   <Router>
-    <App msg="hello"/>
+    <App/>
   </Router>
 );
 

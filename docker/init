@@ -1,0 +1,5 @@
+#!/bin/bash
+
+sed -i "s~EVEREMPIRE_MESSAGE~${EVEREMPIRE_MESSAGE}~" /usr/share/nginx/html/config.json
+
+nginx -g 'daemon off;'

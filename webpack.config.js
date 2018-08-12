@@ -1,3 +1,4 @@
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const FlowWebpackPlugin = require('flow-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -31,6 +32,7 @@ const config = {
   },
 
   plugins: [
+    new CopyWebpackPlugin(['./src/config.json']),
     new FlowWebpackPlugin({
       flowArgs: ['--color=never', '--quiet']
     }),
