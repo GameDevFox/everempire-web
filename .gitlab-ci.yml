@@ -1,7 +1,30 @@
+stages:
+  - build
+  - release
+
 build:
+  stage: build
   image: node
+  coverage: '/All files(?:\s*\|\s*\d*\.?\d+\s*){3}\|\s*(\d*\.?\d+)\s*\|/'
+  artifacts:
+    paths:
+      - dist
   script:
     - npm install -g yarn
     - yarn
     - yarn test
     - yarn build
+
+release:
+  stage: release
+  dependencies:
+    - build
+  image: docker
+  services:
+    - docker:dind
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker build -t $IMAGE_TAG .
+    - docker push $IMAGE_TAG
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
