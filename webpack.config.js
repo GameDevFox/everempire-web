@@ -1,4 +1,5 @@
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+'use strict';
+
 const FlowWebpackPlugin = require('flow-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -20,19 +21,11 @@ const config = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: 'babel-loader',
-      }, {
-        test: /\.scss$/,
-        use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader' },
-          { loader: 'sass-loader' }
-        ]
       }
     ]
   },
 
   plugins: [
-    new CopyWebpackPlugin(['./src/config.json']),
     new FlowWebpackPlugin({
       flowArgs: ['--color=never', '--quiet']
     }),
