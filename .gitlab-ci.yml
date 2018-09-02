@@ -25,6 +25,7 @@ release:
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker build -t $IMAGE_TAG .
+    - docker push $CI_REGISTRY_IMAGE
     - docker push $IMAGE_TAG
   variables:
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
