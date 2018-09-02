@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import { connect } from 'react-redux';
 import { Link, Redirect, Route, Switch, withRouter } from 'react-router-dom';
-import { Button, Header, Menu, Message } from 'semantic-ui-react';
+import { Button, Header, Menu, Message, Segment, Sidebar } from 'semantic-ui-react';
 import styled from 'styled-components';
 
+import DevMenu from '../dev/dev-menu';
 import LoginForm from '../auth/login-form';
+import { login } from '../store/actions';
 
-import { login } from './actions';
 import config from './config';
 import './socket';
 
@@ -22,12 +23,11 @@ const Styles = styled.div`
 class App extends Component {
   onClickButton = () => this.props.onSetMessage('Omega');
 
-  componentDidMount() {
-    this.props.onSetMessage(config.message);
-  }
+  componentDidMount = () => this.props.onSetMessage(config.message);
 
   render() {
-    const { token, location: { pathname } } = this.props;
+    const { showDevMenu, login, location: { pathname } } = this.props;
+
     const menuItems = [
       ['Alpha', '/', true],
       ['Beta', '/one', false],
@@ -41,13 +41,11 @@ class App extends Component {
       <Styles className="app">
         <LoginForm onLogin={({ email, password }) => login(email, password)}/>
 
-        <div>{token}</div>
-
         <Message>
           <Header>Hello {this.props.message}</Header>
           <Menu pointing>{menuItems}</Menu>
 
-          <Button onClick={this.onClickButton}>Click</Button>
+          <Button fluid onClick={this.onClickButton}>Click</Button>
 
           <Switch>
             <Route exact path="/" render={() => <div>Hello World</div>}/>
@@ -56,17 +54,21 @@ class App extends Component {
             <Redirect to="/two"/>
           </Switch>
         </Message>
+
+        <Sidebar as={Segment} animation="overlay" direction="right" visible={showDevMenu}>
+          <DevMenu/>
+        </Sidebar>
       </Styles>
     );
   }
 }
 
 const connectedApp = connect(
-  state => ({
-    message: state.message,
-    token: state.token
-  }),
-  { onSetMessage: value => ({ type: 'SET_MESSAGE', value }) }
+  state => state,
+  {
+    login,
+    onSetMessage: value => ({ type: 'SET_MESSAGE', value })
+  }
 )(App);
 
 export default hot(module)(withRouter(connectedApp));
