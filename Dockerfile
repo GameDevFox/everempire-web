@@ -5,7 +5,6 @@ ADD ./docker/init /init
 
 WORKDIR /usr/share/nginx/html
 
-ADD ./dist/config.json .
 ADD ./dist/index.html .
 ADD ./dist/main.js .
 
