@@ -1,14 +1,20 @@
-import { applyMiddleware, createStore } from 'redux';
+/* eslint-disable */
+// TODO: Remove this in prod
+import { applyMiddleware, createStore, compose } from 'redux';
 
+import tokenListener from '../auth/token-listener';
+
+import * as actionCreators from './actions';
 import promiseMiddleware from './promise-middleware';
 import reducer from './reducer';
-import tokenListener from '../auth/token-listener';
 
 const initialState = { token: null };
 
 const Store = (extraState = {}) => {
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ actionCreators }) || compose;
   const middleware = applyMiddleware(promiseMiddleware);
-  return createStore(reducer, { ...initialState, ...extraState }, middleware);
+
+  return createStore(reducer, { ...initialState, ...extraState }, composeEnhancers(middleware));
 };
 
 // Build store and tokenListener
