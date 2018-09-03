@@ -17,7 +17,7 @@ class LoginForm extends Component {
         <Form.Input fluid icon="mail" iconPosition="left" placeholder="E-mail" {...bindValue(this, 'email')}/>
         <Form.Input fluid icon="lock" iconPosition="left" placeholder="Password" type="password" {...bindValue(this, 'password')}/>
 
-        <Button fluid size="large" onClick={this.onClickButton}>Login</Button>
+        <Button fluid color="blue" size="large" onClick={this.onClickButton}>Login</Button>
       </Segment>
     </Form>
   );

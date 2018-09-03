@@ -13,10 +13,15 @@ import config from './config';
 import './socket';
 
 const Styles = styled.div`
+  height: 100%;
   padding: 14px;
 
-  #login .column {
-    width: 500px;
+  #login {
+    height: 100%;
+
+    .column {
+      width: 450px;
+    }
   }
 `;
 
@@ -55,7 +60,7 @@ class App extends Component {
         </Switch>
       </Message>
     ) : (
-      <Grid centered id="login">
+      <Grid centered id="login" verticalAlign="middle">
         <Grid.Column>
           <LoginForm onLogin={({ email, password }) => login(email, password)}/>
         </Grid.Column>
