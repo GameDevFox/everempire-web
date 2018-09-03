@@ -5,10 +5,14 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import App from './app/app';
+import tokenStorage, { TOKEN } from './auth/token-storage';
 import Store from './store/store';
 import { toggleDevMenu } from './store/actions';
 
-const store = Store();
+const token = localStorage[TOKEN] || null;
+
+const store = Store({ token });
+tokenStorage(store, localStorage);
 
 const root = (
   <Provider store={store}>

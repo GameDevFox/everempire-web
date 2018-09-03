@@ -76,11 +76,7 @@ class App extends Component {
 
 const connectedApp = connect(
   state => state,
-  {
-    login,
-    logout,
-    onSetMessage: value => ({ type: 'SET_MESSAGE', value })
-  }
+  { login, logout, onSetMessage: value => ({ type: 'SET_MESSAGE', value }) }
 )(App);
 
 export default hot(module)(withRouter(connectedApp));

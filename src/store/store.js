@@ -6,14 +6,14 @@ import reducer from './reducer';
 
 const initialState = { message: 'world', token: null };
 
-const Store = () => {
+const Store = (extraState = {}) => {
   /* eslint-disable */
   // TODO: Remove this in prod
 
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ actionCreators }) || compose;
   const middleware = applyMiddleware(promiseMiddleware);
 
-  return createStore(reducer, initialState, composeEnhancers(middleware));
+  return createStore(reducer, { ...initialState, ...extraState }, composeEnhancers(middleware));
   /* eslint-enable */
 };
 
