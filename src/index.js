@@ -12,7 +12,7 @@ import { toggleDevMenu } from './store/actions';
 const token = localStorage[TOKEN] || null;
 
 const store = Store({ token });
-tokenStorage(store, localStorage);
+store.subscribe(tokenStorage(store, localStorage));
 
 const root = (
   <Provider store={store}>

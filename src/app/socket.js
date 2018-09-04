@@ -1,7 +1,9 @@
 import config from './config';
 
-const Socket = ({ onOpen, onClose, onMessage }) => {
-  const ws = new WebSocket(config.webSocketURL);
+const Socket = (token, { onOpen, onClose, onMessage }) => {
+  const { webSocketURL } = config;
+  const escapedToken = encodeURIComponent(token);
+  const ws = new WebSocket(`${webSocketURL}/?token=${escapedToken}`);
 
   if(onOpen)
     ws.addEventListener('open', event => onOpen(event));
@@ -30,6 +32,6 @@ const onMessage = msg => {
   console.log('Message:', msg);
 };
 
-socket = Socket({ onOpen, onClose, onMessage });
+socket = Socket('hello + ? / = world', { onOpen, onClose, onMessage });
 
 export default socket;
