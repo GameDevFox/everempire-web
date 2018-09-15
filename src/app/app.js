@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import { connect } from 'react-redux';
 import { Link, Redirect, Route, Switch, withRouter } from 'react-router-dom';
-import { Button, Grid, Header, Menu, Message, Segment, Sidebar } from 'semantic-ui-react';
+import { Grid, Header, Menu, Message, Segment, Sidebar } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import DevMenu from '../dev/dev-menu';
