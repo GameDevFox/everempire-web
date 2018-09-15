@@ -23,8 +23,6 @@ const Styles = styled.div`
 `;
 
 class App extends Component {
-  onClickButton = () => this.props.onSetMessage('Omega');
-
   render() {
     const { showDevMenu, token, login, logout, location: { pathname } } = this.props;
 
@@ -44,8 +42,6 @@ class App extends Component {
           {menuItems}
           <Menu.Item as="a" position="right" onClick={logout}>Logout</Menu.Item>
         </Menu>
-
-        <Button fluid onClick={this.onClickButton}>Click</Button>
 
         <Switch>
           <Route exact path="/" render={() => <div>Hello World</div>}/>
