@@ -6,32 +6,31 @@ const Socket = (token, { onOpen, onClose, onMessage }) => {
   const ws = new WebSocket(`${webSocketURL}/?token=${escapedToken}`);
 
   if(onOpen)
-    ws.addEventListener('open', event => onOpen(event));
+    ws.addEventListener('open', onOpen);
   if(onClose)
-    ws.addEventListener('close', event => onClose(event));
+    ws.addEventListener('close', onClose);
 
-  ws.addEventListener('message', ({ data }) => onMessage(JSON.parse(data)));
+  const handleMsg = ({ data }) => {
+    const msg = JSON.parse(data);
+    onMessage(msg);
+  };
+
+  ws.addEventListener('message', handleMsg);
 
   const send = msg => ws.send(JSON.stringify(msg));
 
-  return ({ ws, send });
+  const close = () => {
+    ws.close();
+
+    if(onOpen)
+      ws.removeEventListener('open', onOpen);
+    if(onClose)
+      ws.removeEventListener('close', onClose);
+
+    ws.removeEventListener('message', handleMsg);
+  };
+
+  return ({ ws, send, close });
 };
 
-let socket = null;
-
-const onOpen = () => {
-  console.log('Connected to Server!');
-  socket.send({ one: 'more' });
-};
-
-const onClose = () => {
-  console.log('CLOSED SOCKET');
-};
-
-const onMessage = msg => {
-  console.log('Message:', msg);
-};
-
-socket = Socket('hello + ? / = world', { onOpen, onClose, onMessage });
-
-export default socket;
+export default Socket;

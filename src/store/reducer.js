@@ -1,5 +1,4 @@
 const actionReducerMap = {
-  SET_MESSAGE: (state, action) => ({ ...state, message: action.value }),
   SET_TOKEN: (state, { token }) => ({ ...state, token }),
 
   SHOW_DEV_MENU: (state, { value }) => ({ ...state, showDevMenu: value }),

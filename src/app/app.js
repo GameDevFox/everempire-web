@@ -9,9 +9,6 @@ import DevMenu from '../dev/dev-menu';
 import LoginForm from '../auth/login-form';
 import { login, logout } from '../store/actions';
 
-import config from './config';
-import './socket';
-
 const Styles = styled.div`
   height: 100%;
   padding: 14px;
@@ -28,8 +25,6 @@ const Styles = styled.div`
 class App extends Component {
   onClickButton = () => this.props.onSetMessage('Omega');
 
-  componentDidMount = () => this.props.onSetMessage(config.message);
-
   render() {
     const { showDevMenu, token, login, logout, location: { pathname } } = this.props;
 
@@ -44,7 +39,7 @@ class App extends Component {
 
     const content = token ? (
       <Message>
-        <Header>Hello {this.props.message}</Header>
+        <Header>EverEmpire</Header>
         <Menu pointing>
           {menuItems}
           <Menu.Item as="a" position="right" onClick={logout}>Logout</Menu.Item>
@@ -81,7 +76,7 @@ class App extends Component {
 
 const connectedApp = connect(
   state => state,
-  { login, logout, onSetMessage: value => ({ type: 'SET_MESSAGE', value }) }
+  { login, logout }
 )(App);
 
 export default hot(module)(withRouter(connectedApp));
