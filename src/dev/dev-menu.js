@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Select } from 'semantic-ui-react';
+import { Button, Grid, Message, Select } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import users from './users.json';
@@ -19,23 +19,28 @@ const Styles = styled.div`
 `;
 
 const DevMenu = ({ token, login, logout }) => {
-  const loginLogout = token ? (
-    <Button onClick={logout}>Logout</Button>
-  ) : (
-    <Select
-      fluid placeholder="Login as User" options={userOptions}
-      onChange={(_, data) => {
-        const email = data.value;
-        const pass = users[email];
-        login(email, pass);
-      }}
-    />
-  );
-
   return (
     <Styles className="dev-menu">
-      <div className="token">Token: {token || <b>None</b>}</div>
-      {loginLogout}
+      {token ? (
+        <Grid textAlign="right">
+          <Grid.Column>
+            <Button onClick={logout}>Logout</Button>
+          </Grid.Column>
+        </Grid>
+      ) : (
+        <Select fluid placeholder="Login as User" options={userOptions}
+          onChange={(_, data) => {
+            const email = data.value;
+            const pass = users[email];
+            login(email, pass);
+          }}
+        />
+      )}
+
+      <Message className="token">
+        <Message.Header>{token ? 'Token' : 'No Token'}</Message.Header>
+        {token}
+      </Message>
     </Styles>
   );
 };
