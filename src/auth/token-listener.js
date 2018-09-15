@@ -12,7 +12,7 @@ const onOpen = function(socket) {
 const onClose = () => console.log('== CLOSED SOCKET ==');
 const onMessage = ({ type, data }) => console.log('Message:', type, data);
 
-const tokenStorage = (store, storage) => {
+const tokenListener = (store, storage) => {
   const socket = Socket({ onOpen, onClose, onMessage });
 
   const token = storage[TOKEN];
@@ -48,4 +48,4 @@ const tokenStorage = (store, storage) => {
   };
 };
 
-export default tokenStorage;
+export default tokenListener;
