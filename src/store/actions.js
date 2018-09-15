@@ -2,9 +2,10 @@ import * as api from '../app/rest-api';
 
 const A = (type, extra) => ({ type, ...extra });
 
-export const logout = () => A('SET_TOKEN', { token: null });
+export const setToken = token => A('SET_TOKEN', { token });
+export const logout = () => setToken(null);
 export const login = (email, pass) => api.login(email, pass).then(
-  token => A('SET_TOKEN', { token }),
+  setToken,
   logout
 );
 

@@ -5,31 +5,47 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import App from './app/app';
-import tokenListener, { TOKEN } from './auth/token-listener';
-import Store from './store/store';
-import { toggleDevMenu } from './store/actions';
+import { verify } from './app/rest-api';
+import { TOKEN } from './auth/token-listener';
+import store from './store/store';
+import { setToken, toggleDevMenu } from './store/actions';
 
-const token = localStorage[TOKEN] || null;
+const init = () => {
+  // Build root component instance
+  const root = (
+    <Provider store={store}>
+      <Router>
+        <App/>
+      </Router>
+    </Provider>
+  );
 
-const store = Store({ token });
-store.subscribe(tokenListener(store, localStorage));
+  // Get root element
+  const rootEl = document.getElementById('root');
+  if(!rootEl)
+    throw new Error('#root element doesn\'t exist');
 
-const root = (
-  <Provider store={store}>
-    <Router>
-      <App/>
-    </Router>
-  </Provider>
-);
+  // Toggle Dev Menu
+  window.onkeydown = e => {
+    if(e.code === 'Backquote' && document.activeElement === document.body)
+      store.dispatch(toggleDevMenu());
+  };
 
-const rootEl = document.getElementById('root');
-if(!rootEl)
-  throw new Error('#root element doesn\'t exist');
-
-// Toggle Dev Menu
-window.onkeydown = e => {
-  if(e.code === 'Backquote' && document.activeElement === document.body)
-    store.dispatch(toggleDevMenu());
+  // Render
+  render(root, rootEl);
 };
 
-render(root, rootEl);
+const token = localStorage[TOKEN] || null;
+if(token) {
+  verify(token)
+    .then(
+      () => store.dispatch(setToken(token)),
+      e => {
+        delete localStorage[TOKEN];
+        console.warn('Invalid Token', e);
+      }
+    )
+    .finally(init);
+} else {
+  init();
+}

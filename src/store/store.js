@@ -2,6 +2,7 @@ import { applyMiddleware, createStore } from 'redux';
 
 import promiseMiddleware from './promise-middleware';
 import reducer from './reducer';
+import tokenListener from '../auth/token-listener';
 
 const initialState = { token: null };
 
@@ -10,4 +11,9 @@ const Store = (extraState = {}) => {
   return createStore(reducer, { ...initialState, ...extraState }, middleware);
 };
 
-export default Store;
+// Build store and tokenListener
+const store = Store();
+const listener = tokenListener(store, localStorage);
+store.subscribe(listener);
+
+export default store;

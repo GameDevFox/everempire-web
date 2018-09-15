@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { hot } from 'react-hot-loader';
 import { connect } from 'react-redux';
 import { Segment, Sidebar } from 'semantic-ui-react';
@@ -37,4 +38,4 @@ class App extends Component {
   }
 }
 
-export default hot(module)(connect(state => state)(App));
+export default hot(module)(withRouter(connect(state => state)(App)));

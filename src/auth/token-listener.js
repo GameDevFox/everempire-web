@@ -15,17 +15,11 @@ const onMessage = ({ type, data }) => console.log('Message:', type, data);
 const tokenListener = (store, storage) => {
   const socket = Socket({ onOpen, onClose, onMessage });
 
-  const token = storage[TOKEN];
-  if(token)
-    socket.setToken(token);
-
-  window.socket = socket;
-
   return () => {
     const { token } = store.getState();
     const storageToken = storage[TOKEN];
 
-    if(socket === null && token) {
+    if(token && !socket.isConnected()) {
       // Create socket
       try {
         socket.setToken(token);
@@ -42,7 +36,7 @@ const tokenListener = (store, storage) => {
       delete storage[TOKEN];
 
       // Close socket
-      if(socket)
+      if(socket.isConnected())
         socket.setToken(null);
     }
   };
