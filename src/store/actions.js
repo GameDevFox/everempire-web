@@ -1,4 +1,4 @@
-import * as api from '../app/everempire-api';
+import * as api from '../app/rest-api';
 
 const A = (type, extra) => ({ type, ...extra });
 

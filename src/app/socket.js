@@ -1,36 +1,54 @@
 import config from './config';
 
-const Socket = (token, { onOpen, onClose, onMessage }) => {
-  const { webSocketURL } = config;
-  const escapedToken = encodeURIComponent(token);
-  const ws = new WebSocket(`${webSocketURL}/?token=${escapedToken}`);
+const { webSocketURL } = config;
 
-  if(onOpen)
-    ws.addEventListener('open', onOpen);
-  if(onClose)
-    ws.addEventListener('close', onClose);
+const Socket = ({ onOpen, onClose, onMessage }) => {
+  let ws = null;
 
-  const handleMsg = ({ data }) => {
-    const msg = JSON.parse(data);
-    onMessage(msg);
+  const socket = {
+    send: msg => ws.send(JSON.stringify(msg))
   };
 
-  ws.addEventListener('message', handleMsg);
+  const handleOpen = () => onOpen(socket);
+  const handleClose = () => onClose(socket);
 
-  const send = msg => ws.send(JSON.stringify(msg));
+  const handleMessage = ({ data }) => {
+    const msg = JSON.parse(data);
+    onMessage(msg, socket);
+  };
 
   const close = () => {
     ws.close();
 
     if(onOpen)
-      ws.removeEventListener('open', onOpen);
+      ws.removeEventListener('open', handleOpen);
     if(onClose)
-      ws.removeEventListener('close', onClose);
+      ws.removeEventListener('close', handleClose);
 
-    ws.removeEventListener('message', handleMsg);
+    ws.removeEventListener('message', handleMessage);
   };
 
-  return ({ ws, send, close });
+  socket.setToken = token => {
+    if(token === null) {
+      close();
+      return;
+    }
+
+    const escapedToken = encodeURIComponent(token);
+    ws = new WebSocket(`${webSocketURL}/?token=${escapedToken}`);
+
+    if(onOpen)
+      ws.addEventListener('open', handleOpen);
+    if(onClose)
+      ws.addEventListener('close', handleClose);
+
+    ws.addEventListener('message', handleMessage);
+  };
+
+  socket.isConnected = () => ws !== null && ws.readyState;
+  socket.ws = () => ws;
+
+  return socket;
 };
 
 export default Socket;

@@ -2,8 +2,24 @@ export const TOKEN = 'token';
 
 import Socket from '../app/socket';
 
+const onOpen = function(socket) {
+  console.log('Connected to WebSocket Server!');
+
+  socket.send({ type: 'GET_USER' });
+  socket.send({ type: 'MISC' });
+};
+
+const onClose = () => console.log('== CLOSED SOCKET ==');
+const onMessage = ({ type, data }) => console.log('Message:', type, data);
+
 const tokenStorage = (store, storage) => {
-  let socket = null;
+  const socket = Socket({ onOpen, onClose, onMessage });
+
+  const token = storage[TOKEN];
+  if(token)
+    socket.setToken(token);
+
+  window.socket = socket;
 
   return () => {
     const { token } = store.getState();
@@ -11,17 +27,11 @@ const tokenStorage = (store, storage) => {
 
     if(socket === null && token) {
       // Create socket
-      const onOpen = () => {
-        console.log('Connected to WebSocket Server!');
-        socket.send({ type: 'GET_USER' });
-        socket.send({ type: 'MISC' });
-      };
-
-      socket = Socket(token, {
-        onOpen,
-        onClose: () => console.log('== CLOSED SOCKET =='),
-        onMessage: ({ type, data }) => console.log('Message:', type, data)
-      });
+      try {
+        socket.setToken(token);
+      } catch (e) {
+        console.warn(e);
+      }
     }
 
     if(token && !storageToken) {
@@ -32,10 +42,8 @@ const tokenStorage = (store, storage) => {
       delete storage[TOKEN];
 
       // Close socket
-      if(socket) {
-        socket.close();
-        socket = null;
-      }
+      if(socket)
+        socket.setToken(null);
     }
   };
 };
