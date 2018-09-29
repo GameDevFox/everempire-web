@@ -1,8 +1,9 @@
 import { applyMiddleware, createStore } from 'redux';
 
+import tokenListener from '../auth/token-listener';
+
 import promiseMiddleware from './promise-middleware';
 import reducer from './reducer';
-import tokenListener from '../auth/token-listener';
 
 const initialState = { token: null };
 

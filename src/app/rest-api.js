@@ -18,6 +18,6 @@ http.interceptors.request.use(config => {
 http.interceptors.response.use(result => result.data);
 
 export const login = (email, pass) => http.post('/login', { email, pass });
-export const me = () => http.get('/me');
+export const refreshToken = token => http.get('/token', { headers: { Authorization: `Bearer ${token}` } });
 
-export const verify = token => http.get('/me', { headers: { Authorization: `Bearer ${token}` } });
+export const me = () => http.get('/me');

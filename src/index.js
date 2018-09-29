@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import App from './app/app';
-import { verify } from './app/rest-api';
+import { refreshToken } from './app/rest-api';
 import { TOKEN } from './auth/token-listener';
 import store from './store/store';
 import { setToken, toggleDevMenu } from './store/actions';
@@ -37,9 +37,9 @@ const init = () => {
 
 const token = localStorage[TOKEN] || null;
 if(token) {
-  verify(token)
+  refreshToken(token)
     .then(
-      () => store.dispatch(setToken(token)),
+      newToken => store.dispatch(setToken(newToken)),
       e => {
         delete localStorage[TOKEN];
         console.warn('Invalid Token', e);

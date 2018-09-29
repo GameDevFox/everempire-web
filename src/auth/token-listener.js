@@ -8,9 +8,18 @@ const onOpen = function(socket) {
   socket.send({ type: 'GET_USER' });
   socket.send({ type: 'MISC' });
 };
-
 const onClose = () => console.log('== CLOSED SOCKET ==');
-const onMessage = ({ type, data }) => console.log('Message:', type, data);
+
+const onMessage = ({ type, data }) => {
+  switch (type) {
+    case 'USER_LIST':
+      console.log('User List', data);
+      break;
+    default:
+      console.log('Message:', type, data);
+      break;
+  }
+};
 
 const tokenListener = (store, storage) => {
   const socket = Socket({ onOpen, onClose, onMessage });
