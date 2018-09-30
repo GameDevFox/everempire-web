@@ -1,4 +1,6 @@
-const actionReducerMap = {
+const initialState = { token: null };
+
+const actionHandlers = {
   SET_TOKEN: (state, { token }) => ({ ...state, token }),
 
   SHOW_DEV_MENU: (state, { value }) => ({ ...state, showDevMenu: value }),
@@ -6,14 +8,15 @@ const actionReducerMap = {
 };
 
 const reducer = (state, action) => {
+  if(!state)
+    return initialState;
+
   const { type } = action;
-  const actionReducer = actionReducerMap[type];
+  const actionHandler = actionHandlers[type];
 
   let newState = state;
-  if(actionReducer)
-    newState = actionReducer(state, action);
-  else if(!type === '@@INIT' && !type.startsWith('@@redux/INIT'))
-    console.warn(`No actionReducer that matches type for action: ${JSON.stringify(action)}`);
+  if(actionHandler)
+    newState = actionHandler(state, action);
 
   return newState;
 };

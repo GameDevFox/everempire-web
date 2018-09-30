@@ -5,9 +5,7 @@ import tokenListener from '../auth/token-listener';
 
 import reducer from './reducer';
 
-const initialState = { token: null };
-
-const Store = (extraState = {}) => createStore(reducer, { ...initialState, ...extraState }, enhancer);
+const Store = () => createStore(reducer, null, enhancer);
 
 // Build store and tokenListener
 const store = Store();
