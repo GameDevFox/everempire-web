@@ -1,16 +1,13 @@
-import { applyMiddleware, createStore } from 'redux';
+import { createStore } from 'redux';
 
+import enhancer from 'Env/store-enhancer.js';
 import tokenListener from '../auth/token-listener';
 
-import promiseMiddleware from './promise-middleware';
 import reducer from './reducer';
 
 const initialState = { token: null };
 
-const Store = (extraState = {}) => {
-  const middleware = applyMiddleware(promiseMiddleware);
-  return createStore(reducer, { ...initialState, ...extraState }, middleware);
-};
+const Store = (extraState = {}) => createStore(reducer, { ...initialState, ...extraState }, enhancer);
 
 // Build store and tokenListener
 const store = Store();

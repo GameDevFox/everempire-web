@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import store from '../store/store';
-import config from './config';
+import config from 'Env/config';
 
 const http = axios.create({ baseURL: config.apiURL });
 

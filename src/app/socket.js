@@ -1,4 +1,4 @@
-import config from './config';
+import config from 'Env/config';
 
 const { webSocketURL } = config;
 

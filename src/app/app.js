@@ -6,7 +6,7 @@ import { Segment, Sidebar } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import Login from '../auth/login';
-import DevMenu from '../dev/dev-menu';
+import { DevMenu } from 'Env';
 
 import Menu from './menu';
 import Routes from './routes';
@@ -15,6 +15,12 @@ const Styles = styled.div`
   height: 100%;
   padding: 14px;
 `;
+
+const renderSidebar = showDevMenu => DevMenu && (
+  <Sidebar as={Segment} animation="overlay" direction="right" visible={showDevMenu}>
+    <DevMenu/>
+  </Sidebar>
+);
 
 class App extends Component {
   render() {
@@ -30,9 +36,7 @@ class App extends Component {
           <Login/>
         )}
 
-        <Sidebar as={Segment} animation="overlay" direction="right" visible={showDevMenu}>
-          <DevMenu/>
-        </Sidebar>
+        {renderSidebar(showDevMenu)}
       </Styles>
     );
   }

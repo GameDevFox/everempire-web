@@ -1,5 +1,7 @@
 'use strict';
 
+const path = require('path');
+
 const FlowWebpackPlugin = require('flow-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -25,6 +27,12 @@ const config = {
     ]
   },
 
+  resolve: {
+    alias: {
+      Env: path.resolve(__dirname, 'src/env/prod')
+    }
+  },
+
   plugins: [
     new FlowWebpackPlugin({
       flowArgs: ['--color=never', '--quiet']
@@ -43,6 +51,12 @@ if(env === 'development') {
       port: 4000,
       overlay: true
     },
+
+    resolve: {
+      alias: {
+        Env: path.resolve(__dirname, 'src/env/dev')
+      }
+    }
   });
 }
 

@@ -5,7 +5,7 @@ import { Button, Grid, Message, Select } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import users from './users.json';
-import { login, logout } from '../store/actions';
+import { login, logout } from '../../store/actions';
 
 const userOptions = _.map(users, (pass, email) => ({
   text: email,

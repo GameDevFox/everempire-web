@@ -1,5 +1,5 @@
 const { config } = window;
 
-console.log('Config:', config);
+console.log('PROD Config:', config);
 
 export default config;
