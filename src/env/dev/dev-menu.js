@@ -1,16 +1,10 @@
-import _ from 'lodash';
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Grid, Message, Select } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-import users from './users.json';
 import { login, logout } from '../../store/actions';
-
-const userOptions = _.map(users, (pass, email) => ({
-  text: email,
-  value: email
-}));
+import { getDevUsers } from '../../app/rest-api';
 
 const Styles = styled.div`
   .token {
@@ -18,32 +12,54 @@ const Styles = styled.div`
   }
 `;
 
-const DevMenu = ({ token, login, logout }) => {
-  return (
-    <Styles className="dev-menu">
-      {token ? (
-        <Grid textAlign="right">
-          <Grid.Column>
-            <Button onClick={logout}>Logout</Button>
-          </Grid.Column>
-        </Grid>
-      ) : (
-        <Select fluid placeholder="Login as User" options={userOptions}
-          onChange={(_, data) => {
-            const email = data.value;
-            const pass = users[email];
-            login(email, pass);
-          }}
-        />
-      )}
+class DevMenu extends Component {
+  state = { devUsers: [] };
 
-      <Message className="token">
-        <Message.Header>{token ? 'Token' : 'No Token'}</Message.Header>
-        {token}
-      </Message>
-    </Styles>
-  );
-};
+  componentDidMount() {
+    getDevUsers().then(devUsers => this.setState({ devUsers }));
+  }
+
+  onChangeDevUsers = (_, data) => {
+    const { login } = this.props;
+    const { devUsers } = this.state;
+
+    const email = data.value;
+    const { password } = devUsers.find(devUser => devUser.email === email);
+
+    login(email, password);
+  };
+
+  render() {
+    const { token, logout } = this.props;
+    const { devUsers } = this.state;
+
+    const userOptions = devUsers.map(devUser => {
+      return {
+        text: devUser.email,
+        value: devUser.email
+      };
+    });
+
+    return (
+      <Styles className="dev-menu">
+        {token ? (
+          <Grid textAlign="right">
+            <Grid.Column>
+              <Button onClick={logout}>Logout</Button>
+            </Grid.Column>
+          </Grid>
+        ) : (
+          <Select fluid placeholder="Login as User" options={userOptions} onChange={this.onChangeDevUsers}/>
+        )}
+
+        <Message className="token">
+          <Message.Header>{token ? 'Token' : 'No Token'}</Message.Header>
+          {token}
+        </Message>
+      </Styles>
+    );
+  }
+}
 
 export default connect(
   state => state,

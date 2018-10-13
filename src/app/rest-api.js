@@ -21,3 +21,6 @@ export const login = (email, pass) => http.post('/login', { email, pass });
 export const refreshToken = token => http.get('/token', { headers: { Authorization: `Bearer ${token}` } });
 
 export const me = () => http.get('/me');
+
+// DEV Endpoints
+export const getDevUsers = () => http.get('/dev/users');

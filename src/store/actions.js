@@ -1,4 +1,4 @@
-import * as api from '../app/rest-api';
+import { login as apiLogin } from '../app/rest-api';
 import socket from '../app/socket';
 
 // Store actions
@@ -6,7 +6,7 @@ const A = (type, extra) => ({ type, ...extra });
 
 export const setToken = token => A('SET_TOKEN', { token });
 export const logout = () => setToken(null);
-export const login = (email, pass) => api.login(email, pass).then(
+export const login = (email, pass) => apiLogin(email, pass).then(
   setToken,
   logout
 );
