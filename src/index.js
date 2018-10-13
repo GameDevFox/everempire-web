@@ -6,9 +6,13 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import App from './app/app';
 import { refreshToken } from './app/rest-api';
-import { TOKEN } from './auth/token-listener';
+import socket from './app/socket';
+import TokenListener, { TOKEN } from './auth/token-listener';
 import store from './store/store';
 import { setToken, toggleDevMenu } from './store/actions';
+
+const tokenListener = TokenListener({ store, socket, storage: localStorage });
+store.subscribe(tokenListener);
 
 const init = () => {
   // Build root component instance

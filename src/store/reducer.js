@@ -1,10 +1,23 @@
-const initialState = { token: null };
+const initialState = {
+  token: null,
+  game: {
+    pub: {
+      0: {}
+    },
+    priv: {}
+  }
+};
 
 const actionHandlers = {
   SET_TOKEN: (state, { token }) => ({ ...state, token }),
 
   SHOW_DEV_MENU: (state, { value }) => ({ ...state, showDevMenu: value }),
-  TOGGLE_DEV_MENU: state => ({ ...state, showDevMenu: !state.showDevMenu })
+  TOGGLE_DEV_MENU: state => ({ ...state, showDevMenu: !state.showDevMenu }),
+
+  SYNC: (state, { data }) => {
+    const game = { ...state.game, ...data };
+    return { ...state, game };
+  }
 };
 
 const reducer = (state, action) => {

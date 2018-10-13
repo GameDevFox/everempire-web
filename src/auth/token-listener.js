@@ -1,29 +1,6 @@
 export const TOKEN = 'token';
 
-import Socket from '../app/socket';
-
-const onOpen = function(socket) {
-  console.log('Connected to WebSocket Server!');
-
-  socket.send({ type: 'GET_USER' });
-  socket.send({ type: 'MISC' });
-};
-const onClose = () => console.log('== CLOSED SOCKET ==');
-
-const onMessage = ({ type, data }) => {
-  switch (type) {
-    case 'USER_LIST':
-      console.log('User List', data);
-      break;
-    default:
-      console.log('Message:', type, data);
-      break;
-  }
-};
-
-const tokenListener = (store, storage) => {
-  const socket = Socket({ onOpen, onClose, onMessage });
-
+const TokenListener = ({ store, socket, storage }) => {
   return () => {
     const { token } = store.getState();
     const storageToken = storage[TOKEN];
@@ -51,4 +28,4 @@ const tokenListener = (store, storage) => {
   };
 };
 
-export default tokenListener;
+export default TokenListener;
