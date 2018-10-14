@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { Header, Menu as SemanticMenu, Message } from 'semantic-ui-react';
+import styled from 'styled-components';
 
 import { logout } from '../store/actions';
 
@@ -11,23 +12,38 @@ const menu = [
   ['Delta', '/two', false]
 ];
 
-const Menu = ({ children, logout, location: { pathname } }) => {
+const Styles = styled.div`
+  .header > * {
+    display: flex;
+    justify-content: space-between;
+  }
+`;
+
+const Menu = ({ me, children, logout, location: { pathname } }) => {
   const menuItems = menu.map(([name, path, exact]) => {
     const active = exact ? pathname === path : pathname.startsWith(path);
     return <SemanticMenu.Item key={name} active={active} as={Link} to={path}>{name}</SemanticMenu.Item>;
   });
 
   return (
-    <Message>
-      <Header>EverEmpire</Header>
-      <SemanticMenu pointing>
-        {menuItems}
-        <SemanticMenu.Item as="a" position="right" onClick={logout}>Logout</SemanticMenu.Item>
-      </SemanticMenu>
+    <Styles>
+      <Message>
+        <Header>
+          <div>
+            <div>EverEmpire</div>
+            {me && <div>User: {me.email}</div>}
+          </div>
+        </Header>
 
-      {children}
-    </Message>
+        <SemanticMenu pointing>
+          {menuItems}
+          <SemanticMenu.Item as="a" position="right" onClick={logout}>Logout</SemanticMenu.Item>
+        </SemanticMenu>
+
+        {children}
+      </Message>
+    </Styles>
   );
 };
 
-export default withRouter(connect(null, { logout })(Menu));
+export default withRouter(connect(state => state, { logout })(Menu));

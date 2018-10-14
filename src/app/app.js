@@ -10,21 +10,29 @@ import { DevMenu } from 'Env';
 
 import Menu from './menu';
 import Routes from './routes';
+import { isDevMode } from './rest-api';
 
 const Styles = styled.div`
   height: 100%;
   padding: 14px;
 `;
 
-const renderSidebar = showDevMenu => DevMenu && (
-  <Sidebar as={Segment} animation="overlay" direction="right" visible={showDevMenu}>
-    <DevMenu/>
-  </Sidebar>
-);
-
 class App extends Component {
+  state = { devMode: false };
+
+  componentDidMount() {
+    isDevMode().then(devMode => this.setState({ devMode }));
+  }
+
   render() {
     const { showDevMenu, token } = this.props;
+    const { devMode } = this.state;
+
+    const sideBar = devMode && DevMenu && (
+      <Sidebar as={Segment} animation="overlay" direction="right" visible={showDevMenu}>
+        <DevMenu/>
+      </Sidebar>
+    );
 
     return (
       <Styles className="app">
@@ -36,7 +44,7 @@ class App extends Component {
           <Login/>
         )}
 
-        {renderSidebar(showDevMenu)}
+        {sideBar}
       </Styles>
     );
   }

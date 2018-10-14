@@ -1,4 +1,5 @@
 const initialState = {
+  me: null,
   token: null,
   game: {
     pub: {

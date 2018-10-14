@@ -1,4 +1,5 @@
 import axios from 'axios';
+import queryString from 'query-string';
 
 import config from 'Env/config';
 import store from '../store/store';
@@ -17,10 +18,18 @@ http.interceptors.request.use(config => {
 });
 http.interceptors.response.use(result => result.data);
 
-export const login = (email, pass) => http.post('/login', { email, pass });
+export const auth = (email, pass) => {
+  if(pass)
+    return http.post('/auth', { email, pass });
+
+  const query = '?' + queryString.stringify({ devUser: email || null });
+  return http.post(`/auth${query}`);
+};
+
 export const refreshToken = token => http.get('/token', { headers: { Authorization: `Bearer ${token}` } });
 
-export const me = () => http.get('/me');
+export const getMe = () => http.get('/me');
 
 // DEV Endpoints
+export const isDevMode = () => http.get('/dev');
 export const getDevUsers = () => http.get('/dev/users');
