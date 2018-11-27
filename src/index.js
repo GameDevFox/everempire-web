@@ -8,11 +8,16 @@ import App from './app/app';
 import { refreshToken } from './app/rest-api';
 import socket from './app/socket';
 import TokenListener, { TOKEN } from './auth/token-listener';
+import SocketListener from './socket/socket-listener';
 import store from './store/store';
 import { setToken, toggleDevMenu } from './store/actions';
 
-const tokenListener = TokenListener({ store, socket, storage: localStorage });
+// TODO: Rename
+const tokenListener = TokenListener({ store, storage: localStorage });
 store.subscribe(tokenListener);
+
+const socketListener = SocketListener({ store, socket });
+store.subscribe(socketListener);
 
 const init = () => {
   // Build root component instance

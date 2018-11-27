@@ -18,23 +18,7 @@ const Socket = ({ onOpen, onClose, onMessage }) => {
     onMessage(msg, socket);
   };
 
-  const close = () => {
-    ws.close();
-
-    if(onOpen)
-      ws.removeEventListener('open', handleOpen);
-    if(onClose)
-      ws.removeEventListener('close', handleClose);
-
-    ws.removeEventListener('message', handleMessage);
-  };
-
-  socket.setToken = token => {
-    if(token === null) {
-      close();
-      return;
-    }
-
+  socket.connect = token => {
     const escapedToken = encodeURIComponent(token);
     ws = new WebSocket(`${webSocketURL}/?token=${escapedToken}`);
 
@@ -44,6 +28,17 @@ const Socket = ({ onOpen, onClose, onMessage }) => {
       ws.addEventListener('close', handleClose);
 
     ws.addEventListener('message', handleMessage);
+  };
+
+  socket.close = () => {
+    ws.close();
+
+    if(onOpen)
+      ws.removeEventListener('open', handleOpen);
+    if(onClose)
+      ws.removeEventListener('close', handleClose);
+
+    ws.removeEventListener('message', handleMessage);
   };
 
   socket.isConnected = () => ws !== null && ws.readyState === OPEN;

@@ -1,31 +1,16 @@
 export const TOKEN = 'token';
 
-const TokenListener = ({ store, socket, storage }) => {
-  return () => {
-    const { token } = store.getState();
-    const storageToken = storage[TOKEN];
+const TokenListener = ({ store, storage }) => () => {
+  const { token } = store.getState();
+  const storageToken = storage[TOKEN];
 
-    if(token && !socket.isConnected()) {
-      // Create socket
-      try {
-        socket.setToken(token);
-      } catch (e) {
-        console.warn(e);
-      }
-    }
+  // Remember token
+  if(token && !storageToken)
+    storage[TOKEN] = token;
 
-    if(token && !storageToken) {
-      // Remember token
-      storage[TOKEN] = token;
-    } else if(!token && storageToken) {
-      // Forget token
-      delete storage[TOKEN];
-
-      // Close socket
-      if(socket.isConnected())
-        socket.setToken(null);
-    }
-  };
+  // Forget token
+  if(!token && storageToken)
+    delete storage[TOKEN];
 };
 
 export default TokenListener;
