@@ -12,7 +12,7 @@
     "test:watch": "NODE_ENV=test mocha-webpack --watch src/index.spec.js"
   },
   "devDependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "chai": "^4.1.2",
     "flow-bin": "^0.78.0",
     "flow-webpack-plugin": "^1.2.0",
